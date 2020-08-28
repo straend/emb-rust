@@ -14,6 +14,7 @@ use crate::board::{
 use cortex_m::peripheral::Peripherals;
 
 use cortex_m_rt::entry;
+use rtt_target::{rtt_init_print, rprintln};
 
 #[entry]
 fn main() -> ! {
@@ -32,6 +33,8 @@ fn main() -> ! {
         // Get delay provider
         let mut delay = Delay::new(cp.SYST, clocks);
 
+        rtt_init_print!();
+        rprintln!("Hello embedded Rust");
         loop {
             // Turn LEDs on one after the other with 500ms delay between them
             leds[LedColor::Orange].on();
