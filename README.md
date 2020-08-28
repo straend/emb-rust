@@ -38,7 +38,8 @@ ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE:="0666"
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `$ sudo udevadm control --reload-rules`
 
 5. Install [probe-run](https://github.com/knurling-rs/probe-run) for debugging and programming
-        `cargo install probe-run`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`cargo install probe-run`
 
 ## Verify the board
 Connect the discovery board ST-Link (USB mini B) port to the computer USB port and type:
@@ -74,10 +75,10 @@ This build uses the memory map for the STM32F4-Discovery board recorded in the f
 
 # Flash the application
 
-You have two options here, [manual](# Open OCD connection): with OpenOCD, or with [probe-run](# Probe-run)
+You have two options here, [manually](#openocd): with OpenOCD, or with [probe-run](#probe-run)
 First open the OCD connection.
 
-## Open OCD connection
+## OpenOCD
 Run the command:
 
 `$ openocd -f interface/stlink-v2.cfg -f target/stm32f4x.cfg`
