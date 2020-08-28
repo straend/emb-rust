@@ -16,7 +16,7 @@ The memory map remains the same between the two boards.
 Using Ubuntu 20.04 LTS 
 
 1. Install Rust using [Rustup](https://www.rust-lang.org/tools/install), update if required
-1. Add the Cortex-M4 target to the Rust compiler 
+2. Add the Cortex-M4 target to the Rust compiler 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$ rustup target add thumbv7em-none-eabi` 
 
@@ -36,6 +36,9 @@ ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE:="0666"
 * Reload the rules with 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `$ sudo udevadm control --reload-rules`
+
+5. Install [probe-run](https://github.com/knurling-rs/probe-run) for debugging and programming
+        `cargo install probe-run`
 
 ## Verify the board
 Connect the discovery board ST-Link (USB mini B) port to the computer USB port and type:
@@ -71,6 +74,7 @@ This build uses the memory map for the STM32F4-Discovery board recorded in the f
 
 # Flash the application
 
+You have two options here, [manual](# Open OCD connection): with OpenOCD, or with [probe-run](# Probe-run)
 First open the OCD connection.
 
 ## Open OCD connection
@@ -149,6 +153,25 @@ Breakpoint 1, main () at src/main.rs:18
 ```
 
 You can use standard GDB commands at this point.
+
+## Probe-run
+```
+$ cargo run --bin emb-rust
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `probe-run --chip STM32F407VGTx target/thumbv7em-none-eabi/debug/emb-rust`
+flashing program ..
+DONE
+resetting device
+Hello embedded Rust
+^Cstack backtrace:
+   0: 0x08004008 - cortex_m::peripheral::syst::<impl cortex_m::peripheral::SYST>::has_wrapped
+   1: 0x08002686 - <stm32f4xx_hal::delay::Delay as embedded_hal::blocking::delay::DelayUs<u32>>::delay_us
+   2: 0x080025b4 - <stm32f4xx_hal::delay::Delay as embedded_hal::blocking::delay::DelayMs<u32>>::delay_ms
+   3: 0x080025f0 - <stm32f4xx_hal::delay::Delay as embedded_hal::blocking::delay::DelayMs<u16>>::delay_ms
+   4: 0x08000650 - emb_rust::__cortex_m_rt_main
+   5: 0x0800034e - main
+   6: 0x08004e88 - Reset
+```
 
 ## Running the application
 Disconnect the board from the computer, and attach the board to a power source.
